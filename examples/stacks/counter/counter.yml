@@ -10,10 +10,13 @@ services:
     image: htilford/go-redis-counter
     networks:
       - default
-    environment:
-      SERVICE_PORTS: "80"
-      VIRTUAL_HOST: "http://go.counter.examples*,https://go.counter.examples.*"
     deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "http,https"
+        traefik.port: 80
+        traefik.frontend.rule: "HostRegexp: counter.examples.{domain:.+},go.counter.examples.{domain:.+}"
       replicas: 3
       placement:
         constraints: [node.labels.amp.type.user == true]

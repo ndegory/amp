@@ -13,10 +13,13 @@ services:
       default:
         aliases:
           - pinger
-    environment:
-      SERVICE_PORTS: "3000"
-      VIRTUAL_HOST: "pinger.examples.*,https://pinger.examples.*"
     deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "http,https"
+        traefik.port: 3000
+        traefik.frontend.rule: "HostRegexp: pinger.examples.{domain:.+}"
       replicas: 3
       restart_policy:
         condition: on-failure

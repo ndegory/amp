@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.3"
 
 networks:
   default:
@@ -8,24 +8,27 @@ networks:
 secrets:
   certificate_amp:
     external: true
+configs:
+  traefik_toml:
+    external: true
 
 services:
 
   proxy:
-    image: dockercloud/haproxy
+    image: traefik:roquefort
     networks:
       - default
     deploy:
       mode: global
       labels:
         io.amp.role: "infrastructure"
+        io.amp.metrics.port: "8080"
       placement:
         constraints:
         - node.labels.amp.type.route == true
-    environment:
-      CERT_FOLDER: "/run/secrets"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    #command: ["--docker", "--docker.swarmmode", "--docker.domain=localdomain", "--docker.watch", "--web", "--web.metrics.prometheus"]
     labels:
       io.amp.role: "infrastructure"
       amp.service.stabilize.delay: "3s"
@@ -33,8 +36,12 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "1936:1936"
+      - "1936:8080"
     secrets:
       - source: certificate_amp
         target: cert0.pem
         mode: 0400
+    configs:
+      - source: traefik_toml
+        target: /etc/traefik/traefik.toml
+        mode: 0700

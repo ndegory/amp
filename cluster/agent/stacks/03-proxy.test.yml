@@ -11,7 +11,7 @@ services:
     image: appcelerator/alpine:3.6.0
     networks:
       - default
-    command: ["curl", "-sf", "http://stats:stats@${AMP_STACK:-amp}_proxy:1936/haproxy?stats;csv"]
+    command: ["curl", "-sf", "http://${AMP_STACK:-amp}_proxy:8080/ping"]
     labels:
       io.amp.role: "infrastructure"
       io.amp.test:

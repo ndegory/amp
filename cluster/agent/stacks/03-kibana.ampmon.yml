@@ -17,6 +17,12 @@ services:
       labels:
         io.amp.role: "infrastructure"
         io.amp.mapping: "kibana:5601"
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "http,https"
+        traefik.backend: "kibana"
+        traefik.port: 5601
+        traefik.frontend.rule: "HostRegexp: kibana.{domain:.+}"
       placement:
         constraints:
         - node.labels.amp.type.core == true
@@ -27,5 +33,3 @@ services:
       amp.service.pull.timeout: "120s"
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
-      SERVICE_PORTS: 5601
-      VIRTUAL_HOST: "http://kibana.*,https://kibana.*"

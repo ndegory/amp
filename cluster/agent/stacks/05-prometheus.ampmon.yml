@@ -21,9 +21,6 @@ services:
     volumes:
       - prometheus-data:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      SERVICE_PORTS: 9090
-      VIRTUAL_HOST: "http://alerts.*,https://alerts.*"
     ports:
       - "9090:9090"
     labels:
@@ -35,6 +32,12 @@ services:
       replicas: 1
       labels:
         io.amp.role: "infrastructure"
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "http,https"
+        traefik.backend: "alerts"
+        traefik.port: 9090
+        traefik.frontend.rule: "HostRegexp: alerts.{domain:.+}"
       placement:
         constraints:
         - node.labels.amp.type.metrics == true

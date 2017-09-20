@@ -20,8 +20,6 @@ services:
     environment:
       REGISTRATION: ${REGISTRATION:-email}
       NOTIFICATIONS: ${NOTIFICATIONS:-true}
-    ports:
-      - "50101:50101"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
@@ -33,6 +31,13 @@ services:
       labels:
         io.amp.role: "infrastructure"
         io.amp.metrics.port: "5100"
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "https"
+        traefik.protocol: "https"
+        traefik.backend: "grpc"
+        traefik.port: 50101
+        traefik.frontend.rule: "HostRegexp: grpc.{domain:.+}"
       restart_policy:
         condition: on-failure
       placement:

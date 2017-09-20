@@ -22,10 +22,13 @@ services:
       - back-tier
       - payment
       - default
-    environment:
-      SERVICE_PORTS: 8080
-      VIRTUAL_HOST: "https://atsea.examples.*,atsea.examples.*"
     deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "http,https"
+        traefik.port: 8080
+        traefik.frontend.rule: "HostRegexp: atsea.examples.{domain:.+}"
       placement:
         constraints: [node.labels.amp.type.user == true]
       replicas: 2

@@ -16,9 +16,6 @@ services:
       - default
     volumes:
       - grafana-data:/var/lib/grafana
-    environment:
-      SERVICE_PORTS: 3000
-      VIRTUAL_HOST: "http://dashboard.*,https://dashboard.*"
     ports:
       - "3000:3000"
     labels:
@@ -31,6 +28,12 @@ services:
       replicas: 1
       labels:
         io.amp.role: "infrastructure"
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "http,https"
+        traefik.backend: "dashboard"
+        traefik.port: 3000
+        traefik.frontend.rule: "HostRegexp: dashboard.{domain:.+}"
       placement:
         constraints:
         - node.labels.amp.type.core == true

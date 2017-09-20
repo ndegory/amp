@@ -15,13 +15,16 @@ services:
       io.amp.role: "infrastructure"
       amp.service.stabilize.delay: "5s"
       amp.service.stabilize.timeout: "20s"
-    environment:
-      SERVICE_PORTS: 80
-      VIRTUAL_HOST: "https://gw.*,http://gw.*"
     deploy:
       mode: global
       labels:
         io.amp.role: "infrastructure"
+        traefik.enable: "true"
+        traefik.docker.network: ampnet
+        traefik.frontend.entryPoints: "http,https"
+        traefik.backend: "gw"
+        traefik.port: 80
+        traefik.frontend.rule: "HostRegexp: gw.{domain:.+}"
       restart_policy:
         condition: on-failure
       placement:

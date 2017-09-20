@@ -1,0 +1,76 @@
+# Enable Docker configuration backend.
+[docker]
+
+# Docker server endpoint.
+# Can be a tcp or a unix socket endpoint.
+#
+# Required
+# Default: "unix:///var/run/docker.sock"
+#
+# endpoint = "tcp://127.0.0.1:2375"
+endpoint = "unix://var/run/docker.sock"
+
+# Default domain used.
+# Can be overridden by setting the "traefik.domain" label on a services.
+#
+# Optional
+# Default: ""
+#
+# domain = "docker.localhost"
+
+# Enable watch docker changes.
+#
+# Optional
+# Default: true
+#
+watch = true
+
+# Use Docker Swarm Mode as data provider.
+#
+# Optional
+# Default: false
+#
+swarmmode = true
+
+# Override default configuration template.
+# For advanced users :)
+#
+# Optional
+#
+# filename = "docker.tmpl"
+
+# Expose services by default in Traefik.
+#
+# Optional
+# Default: true
+#
+exposedbydefault = false
+
+# Enable docker TLS connection.
+#
+# Optional
+#
+#  [docker.tls]
+#  ca = "/etc/ssl/ca.crt"
+#  cert = "/etc/ssl/docker.crt"
+#  key = "/etc/ssl/docker.key"
+#  insecureskipverify = true
+
+defaultEntryPoints = ["http", "https"]
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+      [[entryPoints.https.tls.certificates]]
+      certFile = "/run/secrets/cert0.pem"
+      keyFile = "/run/secrets/cert0.pem"
+
+[web]
+address = ":8080"
+# certFile = "traefik.crt"
+# keyFile = "traefik.key"
+[web.metrics.prometheus]
