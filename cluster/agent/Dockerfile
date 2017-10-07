@@ -4,6 +4,7 @@ FROM golang:1.9-alpine as build
 RUN apk add --no-cache build-base
 RUN apk add --no-cache ca-certificates
 RUN apk add --no-cache git
+RUN apk add --no-cache binutils
 
 # go
 # ensure any binaries are placed in /tmp/bin
@@ -30,6 +31,9 @@ RUN go test -v -timeout 30m ${PKG}/admin
 # build
 RUN echo "Building ampagent with ${LDFLAGS}" && \
     CGO_ENABLED=0 go build -a -ldflags "${LDFLAGS}" -o ${TARGET} ${PKGCMD}
+
+# shrink the binary
+RUN strip ${TARGET}
 
 # =============================
 FROM scratch
