@@ -1,0 +1,4 @@
+{
+  "target": "https://172.71.0.1",
+  "locusts": ["PingLocust"]
+}
