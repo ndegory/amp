@@ -2,7 +2,8 @@
 FROM golang:1.9-alpine as build
 # =============================
 # system deps
-RUN apk --no-cache add git binutils
+RUN echo "@edgecommunity http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN apk --no-cache add git upx@edgecommunity
 
 # go deps
 RUN go get github.com/LK4D4/vndr
@@ -18,7 +19,7 @@ ARG LDFLAGS="-s"
 RUN go build -ldflags "$LDFLAGS" -o ${TARGET} cmd/main.go
 
 # shrink the binary
-RUN strip ${TARGET}
+RUN upx ${TARGET}
 
 # =============================
 FROM alpine

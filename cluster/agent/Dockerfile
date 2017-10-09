@@ -1,10 +1,12 @@
 # =============================
 FROM golang:1.9-alpine as build
 # =============================
-RUN apk add --no-cache build-base
-RUN apk add --no-cache ca-certificates
-RUN apk add --no-cache git
-RUN apk add --no-cache binutils
+RUN echo "@edgecommunity http://nl.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN apk update
+RUN apk add build-base
+RUN apk add ca-certificates
+RUN apk add git
+RUN apk add upx@edgecommunity
 
 # go
 # ensure any binaries are placed in /tmp/bin
@@ -14,7 +16,7 @@ ENV PKG github.com/appcelerator/amp/cluster/agent
 ENV PKGCMD ${PKG}/cmd
 ENV PKGROOT /go/src/${PKG}
 ENV PKGCMD ${PKG}/cmd
-ARG LDFLAGS="-s"
+ARG LDFLAGS="-s -w"
 
 #RUN go get github.com/LK4D4/vndr
 
@@ -33,7 +35,7 @@ RUN echo "Building ampagent with ${LDFLAGS}" && \
     CGO_ENABLED=0 go build -a -ldflags "${LDFLAGS}" -o ${TARGET} ${PKGCMD}
 
 # shrink the binary
-RUN strip ${TARGET}
+RUN upx ${TARGET}
 
 # =============================
 FROM scratch
