@@ -20,6 +20,9 @@ services:
       - default
     deploy:
       mode: global
+      update_config:
+        parallelism: 1
+        delay: 5s
       labels:
         io.amp.role: "infrastructure"
         io.amp.metrics.port: "8080"
