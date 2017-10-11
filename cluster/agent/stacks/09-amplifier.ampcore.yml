@@ -12,7 +12,6 @@ secrets:
     external: true
 
 services:
-
   amplifier:
     image: appcelerator/amplifier:${TAG:-0.15.0}
     networks:
@@ -20,8 +19,8 @@ services:
     environment:
       REGISTRATION: ${REGISTRATION:-email}
       NOTIFICATIONS: ${NOTIFICATIONS:-true}
-    ports:
-      - "50101:50101"
+      TCP_PORTS: "50101"
+      VIRTUAL_HOST: "http://grpc.*,https://grpc.*"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
@@ -45,4 +44,3 @@ services:
       - source: certificate_amp
         target: cert0.pem
         mode: 0400
-

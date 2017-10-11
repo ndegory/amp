@@ -111,7 +111,7 @@ func (a *Amplifier) Start() error {
 	pemLocation := filepath.Join(configuration.SecretsDir, configuration.CertificateSecret)
 	creds, err := credentials.NewServerTLSFromFile(pemLocation, pemLocation)
 	if err != nil {
-		return fmt.Errorf("could not load TLS keys: %s", err)
+		return fmt.Errorf("could not load TLS certificate: %s", err)
 	}
 
 	// Initialize authentication interceptors
