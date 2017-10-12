@@ -19,8 +19,6 @@ services:
     environment:
       REGISTRATION: ${REGISTRATION:-email}
       NOTIFICATIONS: ${NOTIFICATIONS:-true}
-      TCP_PORTS: "50101"
-      VIRTUAL_HOST: "http://grpc.*,https://grpc.*"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     labels:
