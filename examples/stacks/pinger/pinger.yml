@@ -21,6 +21,9 @@ services:
         traefik.port: 3000
         traefik.frontend.rule: "HostRegexp: pinger.examples.{domain:.+}"
       replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 5s
       restart_policy:
         condition: on-failure
       placement:
