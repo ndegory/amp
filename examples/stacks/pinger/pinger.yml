@@ -18,6 +18,9 @@ services:
       VIRTUAL_HOST: "pinger.examples.*,https://pinger.examples.*"
     deploy:
       replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 5s
       restart_policy:
         condition: on-failure
       placement:
