@@ -39,6 +39,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "50101:50101"
       - "1936:8080"
     secrets:
       - source: certificate_amp

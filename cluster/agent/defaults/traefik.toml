@@ -56,6 +56,8 @@ exposedbydefault = false
 #  key = "/etc/ssl/docker.key"
 #  insecureskipverify = true
 
+#InsecureSkipVerify = true
+RootCAs = [ "/run/secrets/cert0.pem" ]
 defaultEntryPoints = ["http", "https"]
 [entryPoints]
   [entryPoints.http]
@@ -66,6 +68,12 @@ defaultEntryPoints = ["http", "https"]
   address = ":443"
     [entryPoints.https.tls]
       [[entryPoints.https.tls.certificates]]
+      certFile = "/run/secrets/cert0.pem"
+      keyFile = "/run/secrets/cert0.pem"
+  [entryPoints.h2]
+  address = ":50101"
+    [entryPoints.h2.tls]
+      [[entryPoints.h2.tls.certificates]]
       certFile = "/run/secrets/cert0.pem"
       keyFile = "/run/secrets/cert0.pem"
 

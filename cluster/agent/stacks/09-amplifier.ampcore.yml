@@ -33,7 +33,7 @@ services:
         io.amp.metrics.port: "5100"
         traefik.enable: "true"
         traefik.docker.network: ampnet
-        traefik.frontend.entryPoints: "https"
+        traefik.frontend.entryPoints: "h2"
         traefik.protocol: "https"
         traefik.backend: "grpc"
         traefik.port: 50101
