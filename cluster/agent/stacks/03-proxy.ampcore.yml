@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.3"
 
 networks:
   default:
@@ -9,12 +9,42 @@ secrets:
   certificate_amp:
     external: true
 
+configs:
+  interlock_toml:
+    external: true
+
 services:
 
-  proxy:
-    image: dockercloud/haproxy
+  interlock:
+    image: ehazlett/interlock:1.4.3
     networks:
       - default
+    command: run -c /etc/interlock/config.toml
+    ports:
+      - "1936:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      mode: global
+      update_config:
+        parallelism: 1
+        delay: 5s
+      labels:
+        io.amp.role: "infrastructure"
+      placement:
+        constraints:
+        - node.labels.amp.type.route == true
+    configs:
+      - source: interlock_toml
+        target: /etc/interlock/config.toml
+        mode: 0644
+
+  proxy:
+    image: nginx:1.13.5-alpine
+    networks:
+      - default
+    entrypoint: nginx
+    command: ["-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
     deploy:
       mode: global
       update_config:
@@ -33,10 +63,10 @@ services:
       io.amp.role: "infrastructure"
       amp.service.stabilize.delay: "3s"
       amp.service.stabilize.timeout: "30s"
+      interlock.ext.name: "nginx"
     ports:
       - "80:80"
       - "443:443"
-      - "1936:1936"
     secrets:
       - source: certificate_amp
         target: cert0.pem

@@ -21,15 +21,19 @@ services:
     volumes:
       - prometheus-data:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      SERVICE_PORTS: 9090
-      VIRTUAL_HOST: "http://alerts.*,https://alerts.*"
     ports:
       - "9090:9090"
     labels:
       io.amp.role: "infrastructure"
       amp.service.stabilize.delay: "5s"
       amp.service.stabilize.timeout: "45s"
+      interlock.port: 9090
+      interlock.hostname: "alerts"
+      interlock.domain: "*"
+      interlock.ssl: "true"
+      interlock.ssl_cert: "cert0.pem"
+      interlock.ssl_cert_key: "cert0.pem"
+      interlock.network: "ampnet"
     deploy:
       mode: replicated
       replicas: 1

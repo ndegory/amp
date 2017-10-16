@@ -15,9 +15,13 @@ services:
       io.amp.role: "infrastructure"
       amp.service.stabilize.delay: "5s"
       amp.service.stabilize.timeout: "20s"
-    environment:
-      SERVICE_PORTS: 80
-      VIRTUAL_HOST: "https://gw.*,http://gw.*"
+      interlock.port: 80
+      interlock.hostname: "gw"
+      interlock.domain: "*"
+      interlock.ssl: "true"
+      interlock.ssl_cert: "cert0.pem"
+      interlock.ssl_cert_key: "cert0.pem"
+      interlock.network: "ampnet"
     deploy:
       mode: global
       labels:

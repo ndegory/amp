@@ -10,12 +10,15 @@ services:
   pinger:
     image: appcelerator/pinger:${TAG:-latest}
     networks:
-      default:
-        aliases:
-          - pinger
-    environment:
-      SERVICE_PORTS: "3000"
-      VIRTUAL_HOST: "pinger.examples.*,https://pinger.examples.*"
+      - default
+    labels:
+      interlock.port: 3000
+      interlock.hostname: "pinger"
+      interlock.domain: "*"
+      interlock.ssl: "true"
+      interlock.ssl_cert: "cert0.pem"
+      interlock.ssl_cert_key: "cert0.pem"
+      interlock.network: "ampnet"
     deploy:
       replicas: 3
       update_config:

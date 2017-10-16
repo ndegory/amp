@@ -25,7 +25,12 @@ services:
       amp.service.stabilize.delay: "5s"
       amp.service.stabilize.timeout: "60s"
       amp.service.pull.timeout: "120s"
+      interlock.hostname: "kibana"
+      interlock.port: 5601
+      interlock.domain: "*"
+      interlock.ssl: "true"
+      interlock.ssl_cert: "cert0.pem"
+      interlock.ssl_cert_key: "cert0.pem"
+      interlock.network: "ampnet"
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
-      SERVICE_PORTS: 5601
-      VIRTUAL_HOST: "http://kibana.*,https://kibana.*"
