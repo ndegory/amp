@@ -27,5 +27,8 @@ services:
       amp.service.pull.timeout: "120s"
     environment:
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
-      SERVICE_PORTS: 5601
-      VIRTUAL_HOST: "http://kibana.*,https://kibana.*"
+      VIRTUAL_PORT: 5601
+      VIRTUAL_HOST: "kibana.*"
+      VIRTUAL_PROTO: "https"
+      VIRTUAL_PORT: 443
+      CERT_NAME: "cert0"

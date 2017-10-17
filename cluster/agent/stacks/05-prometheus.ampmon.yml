@@ -22,8 +22,11 @@ services:
       - prometheus-data:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      SERVICE_PORTS: 9090
-      VIRTUAL_HOST: "http://alerts.*,https://alerts.*"
+      VIRTUAL_PORT: 9090
+      VIRTUAL_HOST: "alerts.*"
+      VIRTUAL_PROTO: "https"
+      VIRTUAL_PORT: 443
+      CERT_NAME: "cert0"
     ports:
       - "9090:9090"
     labels:

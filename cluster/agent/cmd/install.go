@@ -516,6 +516,7 @@ func CreateConfig(name string, data []byte) error {
 var ampConfigs = map[string]string{
 	"prometheus_alerts_rules": "prometheus_alerts.rules",
 	"api_proxy_cfg":           "api_proxy.cfg",
+	"nginx_template":          "nginx.tmpl",
 }
 
 // This is the default configs path

@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.3"
 
 networks:
   default:
@@ -9,10 +9,14 @@ secrets:
   certificate_amp:
     external: true
 
+configs:
+  nginx_template:
+    external: true
+
 services:
 
   proxy:
-    image: dockercloud/haproxy
+    image: jwilder/nginx-proxy:latest
     networks:
       - default
     deploy:
@@ -25,10 +29,8 @@ services:
       placement:
         constraints:
         - node.labels.amp.type.route == true
-    environment:
-      CERT_FOLDER: "/run/secrets"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     labels:
       io.amp.role: "infrastructure"
       amp.service.stabilize.delay: "3s"
@@ -36,8 +38,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "1936:1936"
     secrets:
       - source: certificate_amp
         target: cert0.pem
         mode: 0400
+    configs:
+      - source: nginx_template
+        target: /app/nginx.tmpl
+        mode: 0644
