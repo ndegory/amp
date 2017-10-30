@@ -1,6 +1,3 @@
-FROM appcelerator/amptools:1.6.0
-
-COPY . /go/src/github.com/appcelerator/amp
-WORKDIR /go/src/github.com/appcelerator/amp
-
-CMD ["go", "test", "github.com/appcelerator/amp/tests/integration/..."]
+FROM appcelerator/ampagent:latest
+COPY cluster/agent/stacks /stacks
+COPY cluster/agent/defaults /defaults
