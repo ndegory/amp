@@ -9,7 +9,7 @@ class PingTaskSet(TaskSet):
 
     @task
     def my_task(self):
-        host_header = 'pinger.examples.local.appcelerator.io'
+        host_header = 'go.counter.examples.local.appcelerator.io'
         ssl_verify = False
         self.client.get('/ping', verify=ssl_verify, headers={'Host': host_header})
 

@@ -16,6 +16,7 @@ services:
     environment:
       SERVICE_PORTS: "3000"
       VIRTUAL_HOST: "pinger.examples.*,https://pinger.examples.*"
+      #SSL_CERT: "${PINGER_CERT}"
     deploy:
       replicas: 3
       update_config:

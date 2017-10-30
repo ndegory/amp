@@ -13,6 +13,7 @@ services:
     environment:
       SERVICE_PORTS: "80"
       VIRTUAL_HOST: "http://go.counter.examples*,https://go.counter.examples.*"
+      SSL_CERT: "$COUNTER_CERT"
     deploy:
       replicas: 3
       placement:
